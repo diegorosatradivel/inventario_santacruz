@@ -1,27 +1,22 @@
 import { Model, Schema, model, models } from 'mongoose';
 
 export type UsuarioPersistido = {
-  usuario: string;
-  contrasenaHash: string;
-  contrasenaSalt: string;
+  nombre: string;
+  contrasena: string;
   creadoEn?: Date;
   actualizadoEn?: Date;
 };
 
 const esquemaUsuario = new Schema<UsuarioPersistido>(
   {
-    usuario: {
+    nombre: {
       type: String,
       required: true,
       unique: true,
       trim: true,
       lowercase: true
     },
-    contrasenaHash: {
-      type: String,
-      required: true
-    },
-    contrasenaSalt: {
+    contrasena: {
       type: String,
       required: true
     }

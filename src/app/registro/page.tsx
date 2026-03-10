@@ -20,7 +20,7 @@ export default function RegistroPage() {
   async function manejarRegistro(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault();
     const formData = new FormData(evento.currentTarget);
-    const usuario = String(formData.get('usuario') ?? '');
+    const nombre = String(formData.get('nombre') ?? '');
     const contrasena = String(formData.get('contrasena') ?? '');
 
     setEstado({ cargando: true, mensaje: '', exito: false });
@@ -28,7 +28,7 @@ export default function RegistroPage() {
     const respuesta = await fetch('/api/auth/registro', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ usuario, contrasena })
+      body: JSON.stringify({ nombre, contrasena })
     });
 
     const data = (await respuesta.json()) as { mensaje?: string };
@@ -49,13 +49,13 @@ export default function RegistroPage() {
       <section style={{ maxWidth: 460, marginInline: 'auto', background: 'white', borderRadius: 16, padding: 24 }}>
         <h1 style={{ fontSize: '1.8rem', marginBottom: 8 }}>Registro de usuario</h1>
         <p style={{ color: 'var(--texto-suave)', marginBottom: 20 }}>
-          Crea tu cuenta con usuario y contraseña. El registro se guardará en MongoDB Atlas.
+          Crea tu cuenta con nombre y contraseña. El registro se guardará en MongoDB Atlas.
         </p>
 
         <form onSubmit={manejarRegistro} style={{ display: 'grid', gap: 12 }}>
           <label style={{ display: 'grid', gap: 6 }}>
-            Usuario
-            <input name="usuario" minLength={4} required style={{ padding: '0.7rem', borderRadius: 10, border: '1px solid var(--borde)' }} />
+            Nombre
+            <input name="nombre" minLength={4} required style={{ padding: '0.7rem', borderRadius: 10, border: '1px solid var(--borde)' }} />
           </label>
 
           <label style={{ display: 'grid', gap: 6 }}>

@@ -1,16 +1,16 @@
 export default function SesionIniciadaPage({
   searchParams
 }: {
-  searchParams: { usuario?: string };
+  searchParams: { nombre?: string };
 }) {
-  const usuario = searchParams.usuario ?? 'usuario';
+  const nombre = searchParams.nombre ?? 'usuario';
 
   return (
     <main className="contenedor" style={{ paddingBlock: '3rem' }}>
       <section style={{ maxWidth: 560, marginInline: 'auto', background: 'white', borderRadius: 16, padding: 24 }}>
         <h1 style={{ fontSize: '2rem', color: '#166534', marginBottom: 8 }}>✅ Inicio de sesión correcto</h1>
         <p style={{ color: 'var(--texto-suave)', marginBottom: 16 }}>
-          Has iniciado sesión correctamente como <strong>{usuario}</strong>.
+          Has iniciado sesión correctamente como <strong>{nombre}</strong>.
         </p>
         <a
           href="/"

@@ -7,21 +7,22 @@ export async function crearHashContrasena(contrasena: string) {
   const salt = randomBytes(16).toString('hex');
   const hashBuffer = (await scrypt(contrasena, salt, 64)) as Buffer;
 
-  return {
-    salt,
-    hash: hashBuffer.toString('hex')
-  };
+  return `${salt}:${hashBuffer.toString('hex')}`;
 }
 
 export async function verificarContrasena({
   contrasena,
-  salt,
-  hashGuardado
+  hashEmpaquetado
 }: {
   contrasena: string;
-  salt: string;
-  hashGuardado: string;
+  hashEmpaquetado: string;
 }) {
+  const [salt, hashGuardado] = hashEmpaquetado.split(':');
+
+  if (!salt || !hashGuardado) {
+    return false;
+  }
+
   const hashBuffer = (await scrypt(contrasena, salt, 64)) as Buffer;
   const hashActual = Buffer.from(hashBuffer.toString('hex'), 'hex');
   const hashOriginal = Buffer.from(hashGuardado, 'hex');

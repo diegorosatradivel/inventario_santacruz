@@ -12,7 +12,7 @@ Este repositorio contiene una plantilla inicial de **Next.js + TypeScript** dise
 
 ## Registro de usuario con MongoDB Atlas
 
-Se integró un flujo de registro con usuario y contraseña usando conexión directa a MongoDB Atlas (`mongodb+srv`).
+Se integró un flujo de registro con nombre y contraseña usando conexión directa a MongoDB Atlas (`mongodb+srv`).
 
 ### Flujo implementado
 

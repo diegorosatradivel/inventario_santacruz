@@ -3,18 +3,18 @@ import { conectarMongoDb } from '@/lib/mongodb';
 import { ModeloUsuario, UsuarioPersistido } from '@/lib/modelos/usuario';
 import { crearHashContrasena } from '@/lib/seguridad';
 
-const LONGITUD_MINIMA_USUARIO = 4;
+const LONGITUD_MINIMA_NOMBRE = 4;
 const LONGITUD_MINIMA_CONTRASENA = 8;
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const usuario = String(body?.usuario ?? '').trim().toLowerCase();
+    const nombre = String(body?.nombre ?? '').trim().toLowerCase();
     const contrasena = String(body?.contrasena ?? '').trim();
 
-    if (usuario.length < LONGITUD_MINIMA_USUARIO) {
+    if (nombre.length < LONGITUD_MINIMA_NOMBRE) {
       return NextResponse.json(
-        { mensaje: `El usuario debe tener mínimo ${LONGITUD_MINIMA_USUARIO} caracteres.` },
+        { mensaje: `El nombre debe tener mínimo ${LONGITUD_MINIMA_NOMBRE} caracteres.` },
         { status: 400 }
       );
     }
@@ -28,18 +28,17 @@ export async function POST(request: Request) {
 
     await conectarMongoDb();
 
-    const existeUsuario = await ModeloUsuario.findOne({ usuario }).lean<UsuarioPersistido>().exec();
+    const existeUsuario = await ModeloUsuario.findOne({ nombre }).lean<UsuarioPersistido>().exec();
 
     if (existeUsuario) {
-      return NextResponse.json({ mensaje: 'Ese usuario ya existe.' }, { status: 409 });
+      return NextResponse.json({ mensaje: 'Ese nombre ya existe.' }, { status: 409 });
     }
 
-    const { hash, salt } = await crearHashContrasena(contrasena);
+    const hashEmpaquetado = await crearHashContrasena(contrasena);
 
     await ModeloUsuario.create({
-      usuario,
-      contrasenaHash: hash,
-      contrasenaSalt: salt
+      nombre,
+      contrasena: hashEmpaquetado
     });
 
     return NextResponse.json({ mensaje: 'Usuario registrado correctamente.' }, { status: 201 });

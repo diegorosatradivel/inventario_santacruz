@@ -6,16 +6,16 @@ import { verificarContrasena } from '@/lib/seguridad';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const usuario = String(body?.usuario ?? '').trim().toLowerCase();
+    const nombre = String(body?.nombre ?? '').trim().toLowerCase();
     const contrasena = String(body?.contrasena ?? '').trim();
 
-    if (!usuario || !contrasena) {
-      return NextResponse.json({ mensaje: 'Usuario y contraseña son obligatorios.' }, { status: 400 });
+    if (!nombre || !contrasena) {
+      return NextResponse.json({ mensaje: 'Nombre y contraseña son obligatorios.' }, { status: 400 });
     }
 
     await conectarMongoDb();
 
-    const usuarioGuardado = await ModeloUsuario.findOne({ usuario }).lean<UsuarioPersistido>().exec();
+    const usuarioGuardado = await ModeloUsuario.findOne({ nombre }).lean<UsuarioPersistido>().exec();
 
     if (!usuarioGuardado) {
       return NextResponse.json({ mensaje: 'Credenciales inválidas.' }, { status: 401 });
@@ -23,8 +23,7 @@ export async function POST(request: Request) {
 
     const contrasenaValida = await verificarContrasena({
       contrasena,
-      salt: String(usuarioGuardado.contrasenaSalt),
-      hashGuardado: String(usuarioGuardado.contrasenaHash)
+      hashEmpaquetado: String(usuarioGuardado.contrasena)
     });
 
     if (!contrasenaValida) {
