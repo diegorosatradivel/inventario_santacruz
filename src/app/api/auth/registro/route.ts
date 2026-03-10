@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { conectarMongoDb } from '@/lib/mongodb';
-import { ModeloUsuario } from '@/lib/modelos/usuario';
+import { ModeloUsuario, UsuarioPersistido } from '@/lib/modelos/usuario';
 import { crearHashContrasena } from '@/lib/seguridad';
 
 const LONGITUD_MINIMA_USUARIO = 4;
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
 
     await conectarMongoDb();
 
-    const existeUsuario = await ModeloUsuario.findOne({ usuario }).lean();
+    const existeUsuario = await ModeloUsuario.findOne({ usuario }).lean<UsuarioPersistido>().exec();
 
     if (existeUsuario) {
       return NextResponse.json({ mensaje: 'Ese usuario ya existe.' }, { status: 409 });

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { conectarMongoDb } from '@/lib/mongodb';
-import { ModeloUsuario } from '@/lib/modelos/usuario';
+import { ModeloUsuario, UsuarioPersistido } from '@/lib/modelos/usuario';
 import { verificarContrasena } from '@/lib/seguridad';
 
 export async function POST(request: Request) {
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
 
     await conectarMongoDb();
 
-    const usuarioGuardado = await ModeloUsuario.findOne({ usuario }).lean();
+    const usuarioGuardado = await ModeloUsuario.findOne({ usuario }).lean<UsuarioPersistido>().exec();
 
     if (!usuarioGuardado) {
       return NextResponse.json({ mensaje: 'Credenciales inválidas.' }, { status: 401 });

@@ -1,6 +1,14 @@
-import { Schema, model, models } from 'mongoose';
+import { Model, Schema, model, models } from 'mongoose';
 
-const esquemaUsuario = new Schema(
+export type UsuarioPersistido = {
+  usuario: string;
+  contrasenaHash: string;
+  contrasenaSalt: string;
+  creadoEn?: Date;
+  actualizadoEn?: Date;
+};
+
+const esquemaUsuario = new Schema<UsuarioPersistido>(
   {
     usuario: {
       type: String,
@@ -24,4 +32,5 @@ const esquemaUsuario = new Schema(
   }
 );
 
-export const ModeloUsuario = models.Usuario || model('Usuario', esquemaUsuario);
+export const ModeloUsuario: Model<UsuarioPersistido> =
+  (models.Usuario as Model<UsuarioPersistido> | undefined) || model<UsuarioPersistido>('Usuario', esquemaUsuario);
