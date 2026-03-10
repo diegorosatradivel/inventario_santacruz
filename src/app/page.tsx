@@ -1,4 +1,3 @@
-import { BotonPrimario } from '@/components/ui/boton-primario';
 import { TarjetaResumen } from '@/features/inicio/components/tarjeta-resumen';
 import { PILARES_BASE } from '@/features/inicio/constantes/pilares';
 import { obtenerAnioActual } from '@/lib/utilidades';
@@ -23,7 +22,33 @@ export default function HomePage() {
           Proyecto preparado para crecer por módulos y mantener buenas prácticas desde el inicio.
         </p>
         <div>
-          <BotonPrimario etiqueta="Comenzar implementación" />
+          <a
+            href="/registro"
+            style={{
+              display: 'inline-block',
+              borderRadius: '0.75rem',
+              padding: '0.75rem 1rem',
+              background: 'var(--primario)',
+              color: 'white',
+              fontWeight: 600
+            }}
+          >
+            Ir al registro
+          </a>
+          <a
+            href="/iniciar-sesion"
+            style={{
+              display: 'inline-block',
+              borderRadius: '0.75rem',
+              padding: '0.75rem 1rem',
+              background: '#111827',
+              color: 'white',
+              fontWeight: 600,
+              marginLeft: '0.75rem'
+            }}
+          >
+            Ir a iniciar sesión
+          </a>
         </div>
       </section>
 

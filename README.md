@@ -8,20 +8,38 @@ Este repositorio contiene una plantilla inicial de **Next.js + TypeScript** dise
 - React 18
 - TypeScript estricto
 - ESLint + Prettier
+- MongoDB Atlas + Mongoose
 
-## Estructura propuesta
+## Registro de usuario con MongoDB Atlas
 
-```txt
-src/
-  app/                        # Rutas y layouts (App Router)
-  components/
-    ui/                       # Componentes reutilizables de UI
-  features/
-    inicio/                   # Módulo por dominio/feature
-      components/
-      constantes/
-  lib/                        # Utilidades compartidas
-```
+Se integró un flujo de registro con nombre y contraseña usando conexión directa a MongoDB Atlas (`mongodb+srv`).
+
+### Flujo implementado
+
+1. El usuario completa el formulario en `/registro`.
+2. Se hace `POST` a `src/app/api/auth/registro/route.ts`.
+3. El servidor valida datos, se conecta a MongoDB Atlas, revisa duplicados y guarda el nuevo usuario.
+4. La contraseña se guarda como hash + salt (nunca en texto plano).
+
+### Variables de entorno
+
+Copia `.env.example` a `.env.local` y completa:
+
+- `MONGODB_URI`
+- `MONGODB_NOMBRE_BD`
+
+
+## Inicio de sesión
+
+Se agregó `POST /api/auth/iniciar-sesion` y la pantalla `/iniciar-sesion`.
+
+- Si las credenciales son correctas, redirige a `/sesion-iniciada` para confirmar acceso.
+- Si son incorrectas, muestra mensaje de error.
+
+## ¿Te puedo crear un usuario en la BBDD?
+
+Sí, pero desde tu entorno (local/servidor) donde sí tengas acceso de red a MongoDB y dependencias instaladas.
+En este entorno no puedo alcanzar el registry para instalar paquetes adicionales ni ejecutar conexión real con Atlas.
 
 ## Scripts
 
@@ -34,9 +52,3 @@ npm run type-check
 npm run formato
 npm run formato:verificar
 ```
-
-## Recomendación de crecimiento
-
-1. Añadir capa de servicios (`src/services`) para llamadas HTTP.
-2. Incorporar testing con Vitest + Testing Library.
-3. Integrar un pipeline CI para lint, type-check y build.
