@@ -1,6 +1,4 @@
-import type { NextConfig } from 'next';
-
-const configuracionNext: NextConfig = {
+const configuracionNext = {
   reactStrictMode: true,
   poweredByHeader: false
 };
