@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { buscarUsuarioPorNombre, crearUsuario } from '@/lib/mongo-atlas-api';
+import { conectarMongoDb } from '@/lib/mongodb';
+import { ModeloUsuario } from '@/lib/modelos/usuario';
 import { crearHashContrasena } from '@/lib/seguridad';
 
 const LONGITUD_MINIMA_USUARIO = 4;
@@ -25,14 +26,21 @@ export async function POST(request: Request) {
       );
     }
 
-    const existente = await buscarUsuarioPorNombre(usuario);
+    await conectarMongoDb();
 
-    if (existente) {
+    const existeUsuario = await ModeloUsuario.findOne({ usuario }).lean();
+
+    if (existeUsuario) {
       return NextResponse.json({ mensaje: 'Ese usuario ya existe.' }, { status: 409 });
     }
 
     const { hash, salt } = await crearHashContrasena(contrasena);
-    await crearUsuario(usuario, hash, salt);
+
+    await ModeloUsuario.create({
+      usuario,
+      contrasenaHash: hash,
+      contrasenaSalt: salt
+    });
 
     return NextResponse.json({ mensaje: 'Usuario registrado correctamente.' }, { status: 201 });
   } catch (error) {
@@ -40,8 +48,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       {
-        mensaje:
-          'No se pudo registrar el usuario. Verifica las variables de entorno de MongoDB Atlas Data API.',
+        mensaje: 'No se pudo registrar el usuario. Verifica la configuración de MongoDB Atlas.',
         detalle: mensaje
       },
       { status: 500 }
