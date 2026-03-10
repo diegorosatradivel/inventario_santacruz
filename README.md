@@ -28,6 +28,19 @@ Copia `.env.example` a `.env.local` y completa:
 - `MONGODB_URI`
 - `MONGODB_NOMBRE_BD`
 
+
+## Inicio de sesión
+
+Se agregó `POST /api/auth/iniciar-sesion` y la pantalla `/iniciar-sesion`.
+
+- Si las credenciales son correctas, redirige a `/sesion-iniciada` para confirmar acceso.
+- Si son incorrectas, muestra mensaje de error.
+
+## ¿Te puedo crear un usuario en la BBDD?
+
+Sí, pero desde tu entorno (local/servidor) donde sí tengas acceso de red a MongoDB y dependencias instaladas.
+En este entorno no puedo alcanzar el registry para instalar paquetes adicionales ni ejecutar conexión real con Atlas.
+
 ## Scripts
 
 ```bash

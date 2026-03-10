@@ -35,6 +35,20 @@ export default function HomePage() {
           >
             Ir al registro
           </a>
+          <a
+            href="/iniciar-sesion"
+            style={{
+              display: 'inline-block',
+              borderRadius: '0.75rem',
+              padding: '0.75rem 1rem',
+              background: '#111827',
+              color: 'white',
+              fontWeight: 600,
+              marginLeft: '0.75rem'
+            }}
+          >
+            Ir a iniciar sesión
+          </a>
         </div>
       </section>
 
